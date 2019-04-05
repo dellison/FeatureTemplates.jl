@@ -31,11 +31,11 @@ julia> feats(x)
  "x.c=3"
 ```
 """
-macro fx(func)
-    @assert func.head == :function "Can only call @fx on function definitions!"
+macro fx(func, featurefunc=:f)
+    @assert func.head == :function "Can only call @fx on function definitions!" func
     featureset = Set()
     extractor = MacroTools.prewalk(func) do e
-        if isa(e, Expr) && e.head == :call && first(e.args) == :f
+        if isa(e, Expr) && e.head == :call && first(e.args) == featurefunc
             feat = Expr(:call, :string)
             for (i, exp) in enumerate(e.args[2:end])
                 i > 1 && push!(feat.args, ",")

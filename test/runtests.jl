@@ -40,4 +40,12 @@ using FeatureTemplates, Test
 
         @test feats(1:3) == ["length(xs)=3", "i=1,xs[i]=1", "i=2,xs[i]=2", "i=3,xs[i]=3"]
     end
+
+    @testset "Feature Function" begin
+        @fx(function features(x)
+            FEAT("bias")
+        end, FEAT)
+
+        @test features([1, 2, 3]) == ["bias"]
+    end
 end
